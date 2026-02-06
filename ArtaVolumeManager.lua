@@ -40,21 +40,28 @@ end;
 
 local iconFile = "Interface\\Icons\\inv_misc_gem_pearl_04"
 
-local avmLDB = LibStub("LibDataBroker-1.1"):NewDataObject("ArtaVolumeManager", {
-	type = "data source",
-	text = "ArtaVolumeManager",
-	icon = iconFile,
-	OnClick = function(_, button) ArtaVolumeManagerMiniMap(button) end,	
+
+local ldb = LibStub("LibDataBroker-1.1", true)
+
+local avmLDB = ldb and ldb:NewDataObject("ArtaVolumeManager", {
+    type = "data source",
+    text = "ArtaVolumeManager",
+    icon = iconFile,
+    OnClick = function(_, button) ArtaVolumeManagerMiniMap(button) end,
 })
 
-function avmLDB:OnEnter()	
-	GameTooltip:SetOwner(self, "ANCHOR_NONE");
-	GameTooltip:SetPoint("TOPLEFT", self, "BOTTOMLEFT");
-	fillInfoTooltip(GameTooltip);
-end;
+if avmLDB then
+    function avmLDB:OnEnter()
+        GameTooltip:SetOwner(self, "ANCHOR_NONE")
+        GameTooltip:SetPoint("TOPLEFT", self, "BOTTOMLEFT")
+        fillInfoTooltip(GameTooltip)
+    end
 
-function avmLDB:OnLeave()
-	GameTooltip:Hide();
+    function avmLDB:OnLeave()
+        GameTooltip:Hide()
+    end
+else
+    print("ArtaVolumeManager: LibDataBroker-1.1 not found, LDB object not created")
 end
 
 
@@ -92,7 +99,11 @@ function f:OnEvent(event, arg1)
 		--Minimap button
 		ArtaVolumeManagerIcon = ArtaVolumeManagerIcon or {};
 		
+		if avmLDB then
+		
 		if icon then icon:Register(addon, avmLDB, ArtaVolumeManagerIcon); end;
+		
+		end;
 		minimapButtonShowHide(false);		
 		f:UnregisterEvent("SPELLS_CHANGED");		
 	end;
