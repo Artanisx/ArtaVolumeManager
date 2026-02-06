@@ -1,6 +1,6 @@
 ## Interface: 120000
-## Title: ArtaVolumeManager
-## Notes: |cFF00FF00Audio Profile toggle between Group and Solo mode.
+## Title: ArtaVolumeManager by |cFF00FF00Artanis|r
+## Notes: |cFF0000FFAudio Profile toggle between Group and Solo mode.
 ## Author: Artanis
 ## Version: 0.1
 

@@ -5,6 +5,18 @@ AVM_SoloMasterVolume = 1.0; -- The Master Volume Setting for Solo Mode
 -- Locals Section
 local TimeSinceLastUpdate = 0
 
+-- Set Slash Commands
+SLASH_ARTAVOLUMEMANAGER1 = "/avm"
+SLASH_ARTAVOLUMEMANAGER2 = "/artavolumemanager"
+function SlashCmdList.ARTAVOLUMEMANAGER(msg, editbox)
+	print("Settings screen invoked [NYI]")
+end
+
+SLASH_ARTAVOLUMEMANAGERTOGGLE1 = "/avmtoggle"
+function SlashCmdList.ARTAVOLUMEMANAGERTOGGLE(msg, editbox)
+	print("Toggle called!  [NYI]")
+end
+
 -- Functions Section
 
 -- Function to show formatted and colored addon messages
