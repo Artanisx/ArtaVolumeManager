@@ -3,8 +3,11 @@
 ## Notes: |cFF0000FFAudio Profile toggle between Group and Solo mode.
 ## Author: Artanis
 ## Version: 0.1
+## SavedVariables: ArtaVolumeManager, ArtaVolumeManagerIcon
+## IconTexture: Interface\Icons\inv_misc_gem_pearl_04
 # Libraries
-Libs/LibDBIcon-1.0/embeds.xml
+LibDBIcon-1.0\embeds.xml
+LibDBIcon-1.0\LibDBIcon-1.0\lib.xml
 
 # Main Files
 ArtaVolumeManager.lua

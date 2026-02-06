@@ -1,3 +1,106 @@
+-- Minimap Section
+local addon = ...
+local icon = LibStub("LibDBIcon-1.0", true);
+ArtaVolumeManagerIcon = ArtaVolumeManagerIcon or {};
+local mmButtonShown = ArtaVolumeManagerIcon.Visible or true;
+
+local function fillInfoTooltip(tip)
+	if tip == nil then print("nil"); return; end;
+	tip:ClearLines();	
+	tip:AddLine("TEST");
+	tip:Show();
+end;
+
+local function minimapButtonShowHide(toggle)
+	if not icon then return; end;
+	--if toggle is true just flip visibility.
+	if toggle then mmButtonShown = not mmButtonShown; end;
+	--if toggle is false adjust visibility to saved status
+	if toggle == false then
+		if ArtaVolumeManagerIcon.Visible == nil then ArtaVolumeManagerIcon.Visible = true; end;
+		mmButtonShown = ArtaVolumeManagerIcon.Visible;
+	end;
+	if mmButtonShown then
+		icon:Show(addon);
+	else
+		icon:Hide(addon);
+		if toggle then print("Minimap button is now hidden.\n"); end;
+	end;
+	ArtaVolumeManagerIcon.Visible = mmButtonShown;
+end;
+
+local function ArtaVolumeManagerMiniMap(button)
+	if not icon then return; end;
+	if button == "LeftButton" then
+		ShowMessage("Left button clicked")
+	elseif button == "RightButton" then
+		ShowMessage("Right button clicked")
+	end;
+end;
+
+local iconFile = "Interface\\Icons\\inv_misc_gem_pearl_04"
+
+local avmLDB = LibStub("LibDataBroker-1.1"):NewDataObject("ArtaVolumeManager", {
+	type = "data source",
+	text = "ArtaVolumeManager",
+	icon = iconFile,
+	OnClick = function(_, button) ArtaVolumeManagerMiniMap(button) end,	
+})
+
+function avmLDB:OnEnter()	
+	GameTooltip:SetOwner(self, "ANCHOR_NONE");
+	GameTooltip:SetPoint("TOPLEFT", self, "BOTTOMLEFT");
+	fillInfoTooltip(GameTooltip);
+end;
+
+function avmLDB:OnLeave()
+	GameTooltip:Hide();
+end
+
+
+AddonCompartmentFrame:RegisterAddon({
+	text = "ArtaVolumeManager",
+	icon = "Interface\\Icons\\inv_misc_gem_pearl_04",
+	notCheckable = true,
+	registerForAnyClick = true,
+	func = function(self, arg1, arg2, checked, mouseButton)
+		mouseButton = arg1.buttonName
+		if mouseButton == "LeftButton" then
+			ShowMessage("Left button clicked")			
+		elseif mouseButton == "RightButton" then		
+			ShowMessage("Right button clicked")
+		end;	
+	end,
+	funcOnEnter = function(self)		
+		GameTooltip:SetOwner(self, "ANCHOR_NONE");
+		GameTooltip:SetPoint("TOPLEFT", self, "BOTTOMLEFT");
+		GameTooltip:ClearLines();
+		fillInfoTooltip(GameTooltip);
+	end,
+	funcOnLeave = function()
+		GameTooltip:Hide();
+	end,
+})
+
+
+--event frame
+local f = CreateFrame("FRAME");
+f:RegisterEvent("SPELLS_CHANGED");
+
+function f:OnEvent(event, arg1)
+	if event == "SPELLS_CHANGED" then
+		--Minimap button
+		ArtaVolumeManagerIcon = ArtaVolumeManagerIcon or {};
+		
+		if icon then icon:Register(addon, avmLDB, ArtaVolumeManagerIcon); end;
+		minimapButtonShowHide(false);		
+		f:UnregisterEvent("SPELLS_CHANGED");		
+	end;
+end;
+f:SetScript("OnEvent", f.OnEvent); 
+
+
+
 -- Globals Section
 AVM_GroupMasterVolume = 0.2; -- The Master Volume Setting for Group Mode
 AVM_SoloMasterVolume = 1.0; -- The Master Volume Setting for Solo Mode
