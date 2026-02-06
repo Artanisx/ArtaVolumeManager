@@ -1,0 +1,22 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                   xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
+                   ..\..\FrameXML\UI.xsd">
+
+	<!-- Set the name for the related LUA file -->
+	<Script File="ArtaVolumeManager.lua"/>
+
+	<!-- Create a frame -->
+	<Frame name="AVMFrame" parent="UIParent" enableMouse="true">
+		<!-- If there's some code to be run, we need a Scripts section -->
+		<Scripts>
+			<!-- Register events and callbacks declared in the .lua -->
+			<OnLoad function="AVM_OnLoad"></OnLoad>
+			<OnEvent function="AVM_OnEvent"></OnEvent>
+		
+		</Scripts>	
+
+	</Frame>
+
+
+</Ui>
