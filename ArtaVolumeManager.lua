@@ -1,3 +1,8 @@
+-- Globals Section
+AVM_GroupMasterVolume = 0.2; -- The Master Volume Setting for Group Mode
+AVM_SoloMasterVolume = 1.0; -- The Master Volume Setting for Solo Mode
+
+
 -- Minimap Section
 local addon = ...
 local icon = LibStub("LibDBIcon-1.0", true);
@@ -7,7 +12,23 @@ local mmButtonShown = ArtaVolumeManagerIcon.Visible or true;
 local function fillInfoTooltip(tip)
 	if tip == nil then print("nil"); return; end;
 	tip:ClearLines();	
-	tip:AddLine("TEST");
+	
+	-- Check current Master Volume levels
+	local svar = GetCVar("Sound_MasterVolume")		
+	svar = tonumber(svar)
+	local mode = "Custom"
+	if svar == AVM_GroupMasterVolume then
+		mode = "Group Mode"			
+	end
+	
+	if svar == AVM_SoloMasterVolume then
+		mode = "Solo Mode"			
+	end
+	
+	
+	tip:AddLine("ArtaVolumeManager: |cFF00FF00"..mode);
+	tip:AddLine("\nLeft Click: Toggle profile");
+	tip:AddLine("Right Click: Open Settings")
 	tip:Show();
 end;
 
@@ -31,10 +52,40 @@ end;
 
 local function ArtaVolumeManagerMiniMap(button)
 	if not icon then return; end;
+	
+	-- Check current Master Volume levels
+	local svar = GetCVar("Sound_MasterVolume")		
+	svar = tonumber(svar)
+	local mode = "Custom"
+	if svar == AVM_GroupMasterVolume then
+		mode = "Group Mode"			
+	end
+	
+	if svar == AVM_SoloMasterVolume then
+		mode = "Solo Mode"			
+	end
+	
+	-- Left click toggles current mode
 	if button == "LeftButton" then
-		ShowMessage("Left button clicked")
+		if mode == "Solo Mode" then
+			ShowMessage("Switching to Group Mode")
+			SetCVar("Sound_MasterVolume", AVM_GroupMasterVolume)
+			GameTooltip:ClearLines();
+			fillInfoTooltip(GameTooltip);			
+		elseif mode == "Group Mode" then
+			ShowMessage("Switching to Solo Mode")
+			SetCVar("Sound_MasterVolume", AVM_SoloMasterVolume)
+			GameTooltip:ClearLines();
+			fillInfoTooltip(GameTooltip);	
+		else
+			ShowMessage("Switching to Solo Mode")
+			SetCVar("Sound_MasterVolume", AVM_SoloMasterVolume)
+			GameTooltip:ClearLines();
+			fillInfoTooltip(GameTooltip);	
+		end
 	elseif button == "RightButton" then
-		ShowMessage("Right button clicked")
+		-- Right click should open a configuration window, but it's NYI
+		ShowMessage("Opening Settings [NYI]")
 	end;
 end;
 
@@ -60,8 +111,6 @@ if avmLDB then
     function avmLDB:OnLeave()
         GameTooltip:Hide()
     end
-else
-    print("ArtaVolumeManager: LibDataBroker-1.1 not found, LDB object not created")
 end
 
 
@@ -112,9 +161,6 @@ f:SetScript("OnEvent", f.OnEvent);
 
 
 
--- Globals Section
-AVM_GroupMasterVolume = 0.2; -- The Master Volume Setting for Group Mode
-AVM_SoloMasterVolume = 1.0; -- The Master Volume Setting for Solo Mode
 
 -- Locals Section
 local TimeSinceLastUpdate = 0
