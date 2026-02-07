@@ -1,0 +1,8 @@
+ignore:
+  - README.md  
+  - Tests
+  - Tools
+  - LibDBIcon-1.0
+
+
+enable-nolib-creation: no
