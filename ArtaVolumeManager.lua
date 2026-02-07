@@ -174,7 +174,36 @@ end
 
 SLASH_ARTAVOLUMEMANAGERTOGGLE1 = "/avmtoggle"
 function SlashCmdList.ARTAVOLUMEMANAGERTOGGLE(msg, editbox)
-	print("Toggle called!  [NYI]")
+	
+	-- Check current Master Volume levels
+	local svar = GetCVar("Sound_MasterVolume")		
+	svar = tonumber(svar)
+	local mode = "Custom"
+	if svar == AVM_GroupMasterVolume then
+		mode = "Group Mode"			
+	end
+	
+	if svar == AVM_SoloMasterVolume then
+		mode = "Solo Mode"			
+	end
+	
+	if mode == "Solo Mode" then
+			ShowMessage("Switching to Group Mode")
+			SetCVar("Sound_MasterVolume", AVM_GroupMasterVolume)
+			GameTooltip:ClearLines();
+			fillInfoTooltip(GameTooltip);			
+	elseif mode == "Group Mode" then
+		ShowMessage("Switching to Solo Mode")
+		SetCVar("Sound_MasterVolume", AVM_SoloMasterVolume)
+		GameTooltip:ClearLines();
+		fillInfoTooltip(GameTooltip);	
+	else
+		ShowMessage("Switching to Solo Mode")
+		SetCVar("Sound_MasterVolume", AVM_SoloMasterVolume)
+		GameTooltip:ClearLines();
+		fillInfoTooltip(GameTooltip);	
+	end	
+	
 end
 
 -- Functions Section
